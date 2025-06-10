@@ -1,29 +1,23 @@
+import { renderCalculadoraPrecioVenta } from './CalculadoraPrecio.js';
+import { renderCalculadoraPuntoEquilibrio } from './CalculadoraPuntoEquilibrio.js';
+
 export function renderSidebar() {
   const sidebar = document.createElement('div');
-  sidebar.className = 'bg-gray-900 text-white w-64 min-h-screen fixed flex flex-col';
+  sidebar.className = 'w-64 h-screen bg-gray-800 text-white p-4 space-y-4 fixed';
 
   sidebar.innerHTML = `
-    <div class="text-2xl font-bold p-6 border-b border-gray-700">Mis Finanzas</div>
-    <nav class="flex-1 p-4 space-y-2">
-      <button id="precioVentaBtn" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">💰 Precio de Venta</button>
-      <button id="puntoEquilibrioBtn" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">⚖️ Punto de Equilibrio</button>
-      <button id="dashboardBtn" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">📊 Dashboard</button>
-    </nav>
+    <h2 class="text-xl font-bold mb-6">Mis Finanzas</h2>
+    <button id="precioVentaBtn" class="block w-full text-left hover:bg-gray-700 px-2 py-1 rounded">📊 Precio de Venta</button>
+    <button id="puntoEquilibrioBtn" class="block w-full text-left hover:bg-gray-700 px-2 py-1 rounded">⚖️ Punto de Equilibrio</button>
   `;
 
   document.body.appendChild(sidebar);
 
-  // Asignamos listeners
   document.getElementById('precioVentaBtn').addEventListener('click', () => {
-    import('./CalculadoraPrecio.js').then(module => module.renderCalculadoraPrecioVenta());
+    renderCalculadoraPrecioVenta();
   });
 
   document.getElementById('puntoEquilibrioBtn').addEventListener('click', () => {
-    import('./CalculadoraPuntoEquilibrio.js').then(module => module.renderCalculadoraPuntoEquilibrio());
-  });
-
-  document.getElementById('dashboardBtn').addEventListener('click', () => {
-    const main = document.getElementById('main-content');
-    main.innerHTML = `<h2 class="text-2xl font-semibold mb-4">Dashboard (próximamente)</h2>`;
+    renderCalculadoraPuntoEquilibrio();
   });
 }
