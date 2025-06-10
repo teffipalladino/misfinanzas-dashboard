@@ -1,30 +1,30 @@
-// components/Sidebar.js
-import { CalculadoraPrecio } from './CalculadoraPrecio.js';
+import { Link } from 'react-router-dom';
+import { Home, DollarSign, BarChart2, PieChart } from 'lucide-react';
 
 export function Sidebar() {
-  const app = document.getElementById("root");
-
-  app.innerHTML = `
-    <div class="flex min-h-screen">
-      <div class="w-64 bg-gray-800 text-white px-4 py-6">
-        <h1 class="text-2xl font-bold mb-6">📊 Mis Finanzas</h1>
-        <ul class="space-y-4">
-          <li>
-            <button onclick="loadCalculadoraPrecio()" class="w-full text-left hover:text-blue-400">
-              💰 Precio de venta
-            </button>
-          </li>
-        </ul>
+  return (
+    <div className="w-64 h-screen bg-gray-800 text-white fixed">
+      <div className="p-4 text-2xl font-bold border-b border-gray-700">
+        Mis Finanzas
       </div>
-      <div id="main-content" class="flex-1 bg-gray-100 p-6">
-        <div id="calculadora-container" class="bg-white rounded p-4 shadow">
-          <p class="text-gray-700">Seleccioná una calculadora desde el menú.</p>
-        </div>
-      </div>
+      <nav className="mt-4 flex flex-col space-y-2 px-4">
+        <Link to="/" className="flex items-center space-x-2 hover:text-blue-400">
+          <Home size={20} />
+          <span>Inicio</span>
+        </Link>
+        <Link to="/precio-venta" className="flex items-center space-x-2 hover:text-blue-400">
+          <DollarSign size={20} />
+          <span>Precio de Venta</span>
+        </Link>
+        <Link to="/punto-equilibrio" className="flex items-center space-x-2 hover:text-blue-400">
+          <PieChart size={20} />
+          <span>Punto de Equilibrio</span>
+        </Link>
+        <Link to="/dashboard" className="flex items-center space-x-2 hover:text-blue-400">
+          <BarChart2 size={20} />
+          <span>Dashboard</span>
+        </Link>
+      </nav>
     </div>
-  `;
+  );
 }
-
-window.loadCalculadoraPrecio = () => {
-  CalculadoraPrecio();
-};
