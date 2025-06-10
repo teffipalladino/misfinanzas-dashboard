@@ -1,67 +1,124 @@
-export function PuntoEquilibrio() {
-  const main = document.getElementById('main-content');
-  main.innerHTML = `
-    <div class="p-4 max-w-lg mx-auto bg-white rounded shadow">
-      <h2 class="text-xl font-bold mb-4">⚖️ Calculadora de Punto de Equilibrio</h2>
-      
-      <h3 class="font-semibold mb-2">Costos fijos</h3>
-      <div id="fijos" class="mb-4"></div>
-      <button id="add-fijo" class="bg-blue-500 text-white px-3 py-1 rounded mb-4">+ Agregar costo fijo</button>
-      
-      <h3 class="font-semibold mb-2">Precio de venta unitario y costo variable unitario</h3>
-      <div id="items" class="mb-4"></div>
-      <button id="add-item" class="bg-green-500 text-white px-3 py-1 rounded mb-4">+ Agregar producto</button>
-      
-      <button id="calc-pe" class="bg-purple-600 text-white px-4 py-2 rounded w-full">Calcular punto de equilibrio</button>
-      <div id="resultado-pe" class="mt-6 text-gray-700 text-sm"></div>
-    </div>`;
+export function PuntoEquilibrio(container) {
+  container.innerHTML = `
+    <h2 class="text-2xl mb-4">Calculadora Punto de Equilibrio</h2>
 
-  document.getElementById('add-fijo').onclick = () => {
+    <div id="costos-fijos-container" class="mb-4">
+      <h3>Costos fijos</h3>
+      <button id="agregarCostoFijoBtn" class="mb-2 px-2 py-1 bg-blue-500 text-white rounded">Agregar costo fijo</button>
+      <div id="lista-costos-fijos"></div>
+      <p>Total costos fijos: <span id="total-costos-fijos">0</span></p>
+    </div>
+
+    <div id="costos-variables-container" class="mb-4">
+      <h3>Costos variables unitarios</h3>
+      <button id="agregarCostoVariableBtn" class="mb-2 px-2 py-1 bg-blue-500 text-white rounded">Agregar costo variable</button>
+      <div id="lista-costos-variables"></div>
+      <p>Total costos variables unitarios: <span id="total-costos-variables">0</span></p>
+    </div>
+
+    <div class="mb-4">
+      <label>Precio de venta unitario: <input id="precioVentaUnitario" type="number" min="0" step="0.01" class="border p-1 w-32" /></label>
+    </div>
+
+    <button id="calcularBtn" class="px-4 py-2 bg-green-600 text-white rounded">Calcular punto de equilibrio</button>
+
+    <div id="resultado" class="mt-4 font-semibold"></div>
+  `;
+
+  const listaCostosFijos = container.querySelector('#lista-costos-fijos');
+  const totalCostosFijosEl = container.querySelector('#total-costos-fijos');
+  const listaCostosVariables = container.querySelector('#lista-costos-variables');
+  const totalCostosVariablesEl = container.querySelector('#total-costos-variables');
+  const precioVentaUnitarioInput = container.querySelector('#precioVentaUnitario');
+  const calcularBtn = container.querySelector('#calcularBtn');
+  const resultadoDiv = container.querySelector('#resultado');
+
+  function calcularTotalCostosFijos() {
+    let total = 0;
+    container.querySelectorAll('.costo-fijo-input').forEach(input => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) total += val;
+    });
+    totalCostosFijosEl.textContent = total.toFixed(2);
+    return total;
+  }
+
+  function calcularTotalCostosVariables() {
+    let total = 0;
+    container.querySelectorAll('.costo-variable-input').forEach(input => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) total += val;
+    });
+    totalCostosVariablesEl.textContent = total.toFixed(2);
+    return total;
+  }
+
+  function agregarCostoFijo() {
     const div = document.createElement('div');
-    div.innerHTML = `<input type="number" placeholder="Costo fijo $" class="border p-2 mb-2 w-full rounded">`;
-    document.getElementById('fijos').appendChild(div);
-  };
+    div.className = 'mb-2';
 
-  document.getElementById('add-item').onclick = () => {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.step = '0.01';
+    input.className = 'costo-fijo-input border p-1 w-32';
+    input.placeholder = 'Costo fijo';
+
+    input.addEventListener('input', () => {
+      calcularTotalCostosFijos();
+    });
+
+    div.appendChild(input);
+    listaCostosFijos.appendChild(div);
+
+    calcularTotalCostosFijos();
+  }
+
+  function agregarCostoVariable() {
     const div = document.createElement('div');
-    div.classList.add('flex', 'gap-2', 'mb-2');
-    div.innerHTML = `
-      <input type="number" placeholder="Precio unitario $" class="border p-2 w-1/2 rounded">
-      <input type="number" placeholder="Costo variable unitario $" class="border p-2 w-1/2 rounded">`;
-    document.getElementById('items').appendChild(div);
-  };
+    div.className = 'mb-2';
 
-  document.getElementById('calc-pe').onclick = () => {
-    const fijos = Array.from(document.querySelectorAll('#fijos input'))
-      .reduce((a, i) => a + Number(i.value || 0), 0);
-    
-    const item = document.querySelector('#items div');
-    if (!item) {
-      alert('Agregá al menos un producto');
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.step = '0.01';
+    input.className = 'costo-variable-input border p-1 w-32';
+    input.placeholder = 'Costo variable';
+
+    input.addEventListener('input', () => {
+      calcularTotalCostosVariables();
+    });
+
+    div.appendChild(input);
+    listaCostosVariables.appendChild(div);
+
+    calcularTotalCostosVariables();
+  }
+
+  calcularBtn.addEventListener('click', () => {
+    const costosFijos = calcularTotalCostosFijos();
+    const costosVariables = calcularTotalCostosVariables();
+    const precioVenta = parseFloat(precioVentaUnitarioInput.value);
+
+    if (isNaN(precioVenta) || precioVenta <= 0) {
+      resultadoDiv.textContent = 'Por favor ingresa un precio de venta válido.';
       return;
     }
-    
-    const [precioInput, costoInput] = item.querySelectorAll('input');
-    const precio = Number(precioInput.value);
-    const costoVariable = Number(costoInput.value);
 
-    if (precio <= costoVariable) {
-      document.getElementById('resultado-pe').innerHTML = `
-        <p class="text-red-600">⚠️ El precio debe ser mayor al costo variable para que exista un punto de equilibrio.</p>`;
+    if (precioVenta <= costosVariables) {
+      resultadoDiv.textContent = 'El precio de venta debe ser mayor que los costos variables unitarios para calcular el punto de equilibrio.';
       return;
     }
 
-    const unidades = Math.ceil(fijos / (precio - costoVariable));
-    const ingresos = unidades * precio;
-    const ganancia = ingresos - fijos;
+    const puntoEquilibrio = costosFijos / (precioVenta - costosVariables);
 
-    document.getElementById('resultado-pe').innerHTML = `
-      <p class="mb-2">📊 <strong>Explicación simple:</strong></p>
-      <ul class="list-disc list-inside space-y-1">
-        <li>Necesitás vender <strong>${unidades}</strong> unidades para alcanzar el punto de equilibrio.</li>
-        <li>En este punto, tus ingresos serán de <strong>$${ingresos.toFixed(2)}</strong> y tu ganancia de <strong>$${ganancia.toFixed(2)}</strong>.</li>
-        <li>Esto cubrirá todos tus costos fijos, que son de <strong>$${fijos.toFixed(2)}</strong>.</li>
-        <li>A partir de este nivel de facturación, comenzarás a obtener ganancias.</li>
-      </ul>`;
-  };
+    resultadoDiv.textContent = `El punto de equilibrio en unidades es: ${puntoEquilibrio.toFixed(2)}`;
+  });
+
+  container.querySelector('#agregarCostoFijoBtn').addEventListener('click', agregarCostoFijo);
+  container.querySelector('#agregarCostoVariableBtn').addEventListener('click', agregarCostoVariable);
+
+  // Agrega un input por defecto para costos fijos y variables
+  agregarCostoFijo();
+  agregarCostoVariable();
 }
