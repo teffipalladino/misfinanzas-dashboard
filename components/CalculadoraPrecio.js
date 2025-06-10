@@ -1,79 +1,103 @@
-// components/CalculadoraPrecio.js
-export function CalculadoraPrecio() {
-  const app = document.getElementById("root");
-  app.innerHTML = `
-    <div class="p-6 max-w-2xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h2 class="text-xl font-bold text-gray-800">💰 Calculadora de Precio de Venta</h2>
+export function renderCalculadoraPrecioVenta(container) {
+  container.innerHTML = `
+    <h2 class="text-2xl mb-4">Calculadora Precio de Venta</h2>
+    <div id="costos-container">
+      <h3>Costos</h3>
+      <button id="agregarCostoBtn" class="mb-2 px-2 py-1 bg-blue-500 text-white rounded">Agregar costo</button>
+      <div id="lista-costos"></div>
+      <p>Total costos: <span id="total-costos">0</span></p>
+    </div>
 
-      <div id="costos-container" class="space-y-2">
-        <label class="block font-medium">Ingresá tus costos:</label>
-        <div class="flex gap-2">
-          <input type="text" placeholder="Descripción (opcional)" class="descripcion-costo border p-2 rounded w-1/2" />
-          <input type="number" placeholder="Monto $" class="monto-costo border p-2 rounded w-1/2" />
-        </div>
-      </div>
-      <button id="agregar-costo" class="bg-blue-600 text-white px-4 py-2 rounded">➕ Agregar otro costo</button>
-      <p class="font-semibold">Costo total: $<span id="total-costos">0</span></p>
+    <div>
+      <label>
+        <input type="radio" name="margenMarkup" value="margen" checked /> Margen de ganancia %
+      </label>
+      <label>
+        <input type="radio" name="margenMarkup" value="markup" /> Markup %
+      </label>
+      <input id="porcentajeGanancia" type="number" min="0" max="100" value="0" class="border p-1 w-20 ml-2" />
+    </div>
 
-      <hr />
+    <p id="precioVentaResult" class="mt-2 font-semibold"></p>
 
-      <label class="block font-medium mt-4">¿Querés aplicar margen de ganancia o markup?</label>
-      <select id="tipo-margen" class="border p-2 rounded w-full">
-        <option value="margen">Margen de ganancia (%)</option>
-        <option value="markup">Markup (%)</option>
-      </select>
-      <input type="number" id="valor-margen" placeholder="Ej: 30" class="border p-2 rounded w-full mt-2" />
-      <p class="mt-2 font-semibold text-blue-700">Precio de venta sugerido: $<span id="precio-sin-iva">0</span></p>
-
-      <hr />
-
-      <label class="block font-medium mt-4">¿Necesitás sumar IVA?</label>
-      <input type="number" id="valor-iva" placeholder="Ej: 21" class="border p-2 rounded w-full" />
-      <p class="mt-2 font-semibold text-green-700">Precio final con IVA: $<span id="precio-con-iva">0</span></p>
+    <div class="mt-4">
+      <label>IVA %: <input id="ivaInput" type="number" min="0" max="100" value="0" class="border p-1 w-20" /></label>
+      <p id="precioConIvaResult" class="mt-2 font-semibold"></p>
     </div>
   `;
 
-  let costos = [];
+  const listaCostos = container.querySelector('#lista-costos');
+  const totalCostosEl = container.querySelector('#total-costos');
+  const precioVentaResult = container.querySelector('#precioVentaResult');
+  const precioConIvaResult = container.querySelector('#precioConIvaResult');
+  const porcentajeGananciaInput = container.querySelector('#porcentajeGanancia');
+  const ivaInput = container.querySelector('#ivaInput');
+  const agregarCostoBtn = container.querySelector('#agregarCostoBtn');
 
-  function actualizarCostos() {
-    const montos = document.querySelectorAll(".monto-costo");
-    costos = Array.from(montos)
-      .map((input) => parseFloat(input.value) || 0);
-    const total = costos.reduce((acc, val) => acc + val, 0);
-    document.getElementById("total-costos").textContent = total.toFixed(2);
-    calcularPrecio();
+  function calcularTotalCostos() {
+    let total = 0;
+    container.querySelectorAll('.costo-input').forEach(input => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val)) total += val;
+    });
+    totalCostosEl.textContent = total.toFixed(2);
+    return total;
   }
 
-  function calcularPrecio() {
-    const total = costos.reduce((acc, val) => acc + val, 0);
-    const tipo = document.getElementById("tipo-margen").value;
-    const valor = parseFloat(document.getElementById("valor-margen").value) || 0;
-    let precio = 0;
+  function calcularPrecioVenta() {
+    const totalCostos = calcularTotalCostos();
+    const porcentaje = parseFloat(porcentajeGananciaInput.value) || 0;
+    const tipo = container.querySelector('input[name="margenMarkup"]:checked').value;
 
-    if (tipo === "margen") {
-      precio = total / (1 - valor / 100);
+    let precioVenta = 0;
+    if (tipo === 'margen') {
+      precioVenta = totalCostos / (1 - porcentaje / 100);
+      precioVentaResult.textContent = `Con este margen de ganancia (${porcentaje}%), tu precio de venta será: $${precioVenta.toFixed(2)}`;
     } else {
-      precio = total * (1 + valor / 100);
+      precioVenta = totalCostos * (1 + porcentaje / 100);
+      precioVentaResult.textContent = `Con este markup (${porcentaje}%), tu precio de venta será: $${precioVenta.toFixed(2)}`;
     }
-
-    document.getElementById("precio-sin-iva").textContent = precio.toFixed(2);
-
-    const iva = parseFloat(document.getElementById("valor-iva").value) || 0;
-    const precioConIva = precio * (1 + iva / 100);
-    document.getElementById("precio-con-iva").textContent = precioConIva.toFixed(2);
+    return precioVenta;
   }
 
-  document.getElementById("agregar-costo").addEventListener("click", () => {
-    const nuevo = document.createElement("div");
-    nuevo.className = "flex gap-2 mt-2";
-    nuevo.innerHTML = `
-      <input type="text" placeholder="Descripción (opcional)" class="descripcion-costo border p-2 rounded w-1/2" />
-      <input type="number" placeholder="Monto $" class="monto-costo border p-2 rounded w-1/2" />
-    `;
-    document.getElementById("costos-container").appendChild(nuevo);
+  function calcularPrecioConIVA(precioVenta) {
+    const iva = parseFloat(ivaInput.value) || 0;
+    const precioConIVA = precioVenta * (1 + iva / 100);
+    precioConIvaResult.textContent = `Tu precio de venta con IVA incluido es de: $${precioConIVA.toFixed(2)}`;
+  }
+
+  function actualizarCalculos() {
+    const precioVenta = calcularPrecioVenta();
+    calcularPrecioConIVA(precioVenta);
+  }
+
+  function agregarCosto() {
+    const div = document.createElement('div');
+    div.className = 'mb-2';
+
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.step = '0.01';
+    input.className = 'costo-input border p-1 w-32';
+    input.placeholder = 'Costo';
+
+    input.addEventListener('input', actualizarCalculos);
+
+    div.appendChild(input);
+    listaCostos.appendChild(div);
+
+    actualizarCalculos();
+  }
+
+  agregarCostoBtn.addEventListener('click', agregarCosto);
+
+  porcentajeGananciaInput.addEventListener('input', actualizarCalculos);
+  ivaInput.addEventListener('input', actualizarCalculos);
+  container.querySelectorAll('input[name="margenMarkup"]').forEach(radio => {
+    radio.addEventListener('change', actualizarCalculos);
   });
 
-  document.addEventListener("input", () => {
-    actualizarCostos();
-  });
+  // Empieza con un input de costo por defecto
+  agregarCosto();
 }
