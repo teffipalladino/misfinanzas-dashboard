@@ -2,7 +2,7 @@
 import { CalculadoraPrecio } from './CalculadoraPrecio.js';
 
 export function Sidebar() {
-  const app = document.getElementById("app");
+  const app = document.getElementById("root");
   app.innerHTML = `
     <div class="flex min-h-screen">
       <!-- Sidebar -->
