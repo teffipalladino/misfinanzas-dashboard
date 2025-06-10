@@ -1,27 +1,34 @@
+// components/Sidebar.js
 import { CalculadoraPrecio } from './CalculadoraPrecio.js';
-export function Sidebar(onSelectView) {
-  const sidebar = document.createElement('nav');
-  sidebar.className = 'w-64 h-screen bg-[#1f2937] text-white p-4 flex flex-col gap-4 shadow-lg';
 
-  const title = document.createElement('h2');
-  title.textContent = 'Mis Finanzas';
-  title.className = 'text-2xl font-bold mb-6 text-center text-[#8b5cf6]';
-  sidebar.appendChild(title);
+export function Sidebar() {
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <div class="w-64 bg-gray-800 text-white min-h-screen px-4 py-6">
+        <h1 class="text-2xl font-bold mb-6">📊 Mis Finanzas</h1>
+        <ul class="space-y-4">
+          <li>
+            <button onclick="loadCalculadoraPrecio()" class="w-full text-left hover:text-blue-400">
+              💰 Precio de venta
+            </button>
+          </li>
+          <!-- Acá podés ir agregando más calculadoras -->
+        </ul>
+      </div>
 
-  const navItems = [
-    { name: 'Dashboard', id: 'dashboard', icon: '📊' },
-    { name: 'Precio de venta', id: 'precio', icon: '💸' },
-    { name: 'Punto de equilibrio', id: 'equilibrio', icon: '⚖️' },
-    { name: 'Cuotas vs. Contado', id: 'cuotas', icon: '💳' },
-  ];
-
-  navItems.forEach(item => {
-    const button = document.createElement('button');
-    button.textContent = `${item.icon} ${item.name}`;
-    button.className = 'text-left py-2 px-4 hover:bg-[#2563eb] rounded transition';
-    button.onclick = () => onSelectView(item.id);
-    sidebar.appendChild(button);
-  });
-
-  return sidebar;
+      <!-- Contenido -->
+      <div id="main-content" class="flex-1 bg-gray-100 p-6">
+        <div id="calculadora-container" class="bg-white rounded p-4 shadow">
+          <p class="text-gray-700">Seleccioná una calculadora desde el menú.</p>
+        </div>
+      </div>
+    </div>
+  `;
 }
+
+// Esta función se expone globalmente para que el botón funcione
+window.loadCalculadoraPrecio = () => {
+  CalculadoraPrecio();
+};
