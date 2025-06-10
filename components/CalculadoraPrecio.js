@@ -1,6 +1,6 @@
 // components/CalculadoraPrecio.js
 export function CalculadoraPrecio() {
-  const app = document.getElementById("app");
+  const app = document.getElementById("root");
   app.innerHTML = `
     <div class="p-6 max-w-2xl mx-auto bg-white rounded-xl shadow-md space-y-4">
       <h2 class="text-xl font-bold text-gray-800">💰 Calculadora de Precio de Venta</h2>
