@@ -1,30 +1,29 @@
-import { Link } from 'react-router-dom';
-import { Home, DollarSign, BarChart2, PieChart } from 'lucide-react';
+export function renderSidebar() {
+  const sidebar = document.createElement('div');
+  sidebar.className = 'bg-gray-900 text-white w-64 min-h-screen fixed flex flex-col';
 
-export function Sidebar() {
-  return (
-    <div className="w-64 h-screen bg-gray-800 text-white fixed">
-      <div className="p-4 text-2xl font-bold border-b border-gray-700">
-        Mis Finanzas
-      </div>
-      <nav className="mt-4 flex flex-col space-y-2 px-4">
-        <Link to="/" className="flex items-center space-x-2 hover:text-blue-400">
-          <Home size={20} />
-          <span>Inicio</span>
-        </Link>
-        <Link to="/precio-venta" className="flex items-center space-x-2 hover:text-blue-400">
-          <DollarSign size={20} />
-          <span>Precio de Venta</span>
-        </Link>
-        <Link to="/punto-equilibrio" className="flex items-center space-x-2 hover:text-blue-400">
-          <PieChart size={20} />
-          <span>Punto de Equilibrio</span>
-        </Link>
-        <Link to="/dashboard" className="flex items-center space-x-2 hover:text-blue-400">
-          <BarChart2 size={20} />
-          <span>Dashboard</span>
-        </Link>
-      </nav>
-    </div>
-  );
+  sidebar.innerHTML = `
+    <div class="text-2xl font-bold p-6 border-b border-gray-700">Mis Finanzas</div>
+    <nav class="flex-1 p-4 space-y-2">
+      <button id="precioVentaBtn" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">💰 Precio de Venta</button>
+      <button id="puntoEquilibrioBtn" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">⚖️ Punto de Equilibrio</button>
+      <button id="dashboardBtn" class="w-full text-left px-4 py-2 rounded hover:bg-gray-700">📊 Dashboard</button>
+    </nav>
+  `;
+
+  document.body.appendChild(sidebar);
+
+  // Asignamos listeners
+  document.getElementById('precioVentaBtn').addEventListener('click', () => {
+    import('./CalculadoraPrecio.js').then(module => module.renderCalculadoraPrecioVenta());
+  });
+
+  document.getElementById('puntoEquilibrioBtn').addEventListener('click', () => {
+    import('./CalculadoraPuntoEquilibrio.js').then(module => module.renderCalculadoraPuntoEquilibrio());
+  });
+
+  document.getElementById('dashboardBtn').addEventListener('click', () => {
+    const main = document.getElementById('main-content');
+    main.innerHTML = `<h2 class="text-2xl font-semibold mb-4">Dashboard (próximamente)</h2>`;
+  });
 }
