@@ -1,23 +1,30 @@
-import { renderCalculadoraPrecioVenta } from './CalculadoraPrecio.js';
-import { renderCalculadoraPuntoEquilibrio } from './CalculadoraPuntoEquilibrio.js';
+// components/Sidebar.js
+import { CalculadoraPrecio } from './CalculadoraPrecio.js';
 
-export function renderSidebar() {
-  const sidebar = document.createElement('div');
-  sidebar.className = 'w-64 h-screen bg-gray-800 text-white p-4 space-y-4 fixed';
+export function Sidebar() {
+  const app = document.getElementById("root");
 
-  sidebar.innerHTML = `
-    <h2 class="text-xl font-bold mb-6">Mis Finanzas</h2>
-    <button id="precioVentaBtn" class="block w-full text-left hover:bg-gray-700 px-2 py-1 rounded">📊 Precio de Venta</button>
-    <button id="puntoEquilibrioBtn" class="block w-full text-left hover:bg-gray-700 px-2 py-1 rounded">⚖️ Punto de Equilibrio</button>
+  app.innerHTML = `
+    <div class="flex min-h-screen">
+      <div class="w-64 bg-gray-800 text-white px-4 py-6">
+        <h1 class="text-2xl font-bold mb-6">📊 Mis Finanzas</h1>
+        <ul class="space-y-4">
+          <li>
+            <button onclick="loadCalculadoraPrecio()" class="w-full text-left hover:text-blue-400">
+              💰 Precio de venta
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div id="main-content" class="flex-1 bg-gray-100 p-6">
+        <div id="calculadora-container" class="bg-white rounded p-4 shadow">
+          <p class="text-gray-700">Seleccioná una calculadora desde el menú.</p>
+        </div>
+      </div>
+    </div>
   `;
-
-  document.body.appendChild(sidebar);
-
-  document.getElementById('precioVentaBtn').addEventListener('click', () => {
-    renderCalculadoraPrecioVenta();
-  });
-
-  document.getElementById('puntoEquilibrioBtn').addEventListener('click', () => {
-    renderCalculadoraPuntoEquilibrio();
-  });
 }
+
+window.loadCalculadoraPrecio = () => {
+  CalculadoraPrecio();
+};
