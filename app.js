@@ -1,16 +1,17 @@
-import { Sidebar } from './components/Sidebar.js';
+import { Sidebar } from './Sidebar.js';
 
-const root = document.getElementById('root');
-const layout = document.createElement('div');
-layout.className = 'layout';
+document.addEventListener('DOMContentLoaded', () => {
+  Sidebar();
 
-const main = document.createElement('main');
-main.innerHTML = '<h1>Dashboard (en desarrollo)</h1>';
+  document.getElementById('precioVentaBtn').addEventListener('click', () => {
+    import('./CalculadoraPrecio.js').then(module => {
+      module.CalculadoraPrecio();
+    });
+  });
 
-const changeView = (view) => {
-  main.innerHTML = `<h1>${view} (en desarrollo)</h1>`;
-};
-
-layout.appendChild(Sidebar(changeView));
-layout.appendChild(main);
-root.appendChild(layout);
+  document.getElementById('peBtn').addEventListener('click', () => {
+    import('./CalculadoraPuntoEquilibrio.js').then(module => {
+      module.PuntoEquilibrio();
+    });
+  });
+});
