@@ -1,3 +1,4 @@
+import { CalculadoraPrecio } from './CalculadoraPrecio.js';
 export function Sidebar(onSelectView) {
   const sidebar = document.createElement('nav');
   sidebar.className = 'w-64 h-screen bg-[#1f2937] text-white p-4 flex flex-col gap-4 shadow-lg';
