@@ -5,60 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mis Finanzas</title>
   <link href="style.css" rel="stylesheet" />
+  <style>
+    .sidebar h2 {
+      color: white;
+    }
+  </style>
 </head>
 <body style="display: flex; margin: 0; height: 100vh;">
 
   <!-- Sidebar para la navegación -->
-  <div id="sidebar" class="sidebar"><!-- ✅ MODIFICADO: se aplicó clase de sidebar --></div>
+  <div id="sidebar" class="sidebar">
+    <h2>Mis Finanzas</h2>
+    <button onclick="mostrarSeccion('main')">Calculadora</button>
+    <button onclick="mostrarSeccion('dashboard')">Dashboard</button>
+  </div>
 
-  <!-- Contenedor principal para mostrar las calculadoras y dashboard -->
-  <main id="main" class="calculator"><!-- ✅ MODIFICADO: clase 'calculator' para aplicar estilos nuevos -->
-
-    <!-- ✅ NUEVO CONTENIDO: Caja estilizada para la calculadora -->
+  <!-- Contenedor principal para mostrar las calculadoras -->
+  <main id="main" class="calculator">
     <div class="card max-w-xl mx-auto">
-
       <h2 class="section-title">Calculadora Precio de Venta</h2>
 
       <p class="label">Ingresá tus costos:</p>
-      
       <div class="input-group">
         <input type="text" placeholder="Descripción (opcional)">
         <input type="number" placeholder="Monto $">
       </div>
-
       <button class="btn-secondary">➕ Agregar otro costo</button>
 
       <p class="total-cost">Costo total: <strong>$0,00</strong></p>
-
       <hr />
 
       <p class="label">¿Querés aplicar margen de ganancia o markup?</p>
-
       <div class="radio-group">
         <label><input type="radio" name="modo" checked> Margen de ganancia (%)</label>
         <label><input type="radio" name="modo"> Markup (%)</label>
       </div>
-
       <input type="number" placeholder="Ej: 30">
 
       <p class="label">Precio de venta sugerido: <strong>$0,00</strong></p>
-
       <hr />
 
       <p class="label">¿Necesitás sumar IVA?</p>
-
       <input type="number" placeholder="Ej: 21">
-
       <p class="label">Precio final con IVA: <strong>$0,00</strong></p>
 
       <button class="btn-clear">🗑️ Borrar todo</button>
-
     </div>
-    <!-- ✅ FIN NUEVO CONTENIDO -->
-
   </main>
+
+  <!-- NUEVO: Sección de dashboard oculta al inicio -->
+  <section id="dashboard" style="display: none; padding: 1rem; flex: 1;">
+    <section class="dashboard-cards">
+      <div class="card-box bg-blue">
+        <h3 id="ventasPromedio">--</h3>
+        <p>Ventas promedio</p>
+        <a href="#">Más info <span>→</span></a>
+      </div>
+
+      <div class="card-box bg-green">
+        <h3 id="stockVsIdeal">--</h3>
+        <p>Stock actual vs ideal</p>
+        <a href="#">Más info <span>→</span></a>
+      </div>
+
+      <div class="card-box bg-yellow">
+        <h3 id="rentabilidad">--</h3>
+        <p>Rentabilidad</p>
+        <a href="#">Más info <span>→</span></a>
+      </div>
+
+      <div class="card-box bg-red">
+        <h3 id="pl">--</h3>
+        <p>Pérdidas y Ganancias</p>
+        <a href="#">Más info <span>→</span></a>
+      </div>
+    </section>
+  </section>
+
+  <script>
+    function mostrarSeccion(id) {
+      const main = document.getElementById("main");
+      const dashboard = document.getElementById("dashboard");
+
+      if (id === "main") {
+        main.style.display = "block";
+        dashboard.style.display = "none";
+      } else if (id === "dashboard") {
+        main.style.display = "none";
+        dashboard.style.display = "block";
+      }
+    }
+  </script>
 
   <script type="module" src="app.js"></script>
 </body>
 </html>
-
