@@ -12,8 +12,53 @@
   <div id="sidebar" class="sidebar"><!-- ✅ MODIFICADO: se aplicó clase de sidebar --></div>
 
   <!-- Contenedor principal para mostrar las calculadoras y dashboard -->
-  <main id="main" class="calculator"><!-- ✅ MODIFICADO: clase 'calculator' para aplicar estilos nuevos --></main>
+  <main id="main" class="calculator"><!-- ✅ MODIFICADO: clase 'calculator' para aplicar estilos nuevos -->
+
+    <!-- ✅ NUEVO CONTENIDO: Caja estilizada para la calculadora -->
+    <div class="card max-w-xl mx-auto">
+
+      <h2 class="section-title">Calculadora Precio de Venta</h2>
+
+      <p class="label">Ingresá tus costos:</p>
+      
+      <div class="input-group">
+        <input type="text" placeholder="Descripción (opcional)">
+        <input type="number" placeholder="Monto $">
+      </div>
+
+      <button class="btn-secondary">➕ Agregar otro costo</button>
+
+      <p class="total-cost">Costo total: <strong>$0,00</strong></p>
+
+      <hr />
+
+      <p class="label">¿Querés aplicar margen de ganancia o markup?</p>
+
+      <div class="radio-group">
+        <label><input type="radio" name="modo" checked> Margen de ganancia (%)</label>
+        <label><input type="radio" name="modo"> Markup (%)</label>
+      </div>
+
+      <input type="number" placeholder="Ej: 30">
+
+      <p class="label">Precio de venta sugerido: <strong>$0,00</strong></p>
+
+      <hr />
+
+      <p class="label">¿Necesitás sumar IVA?</p>
+
+      <input type="number" placeholder="Ej: 21">
+
+      <p class="label">Precio final con IVA: <strong>$0,00</strong></p>
+
+      <button class="btn-clear">🗑️ Borrar todo</button>
+
+    </div>
+    <!-- ✅ FIN NUEVO CONTENIDO -->
+
+  </main>
 
   <script type="module" src="app.js"></script>
 </body>
 </html>
+
