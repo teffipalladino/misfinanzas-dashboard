@@ -1,28 +1,32 @@
 export function renderCalculadoraPrecioVenta(container) {
   container.innerHTML = `
-    <h2 class="text-2xl mb-4">Calculadora Precio de Venta</h2>
-    <div id="costos-container">
-      <h3>Costos</h3>
-      <button id="agregarCostoBtn" class="mb-2 px-2 py-1 bg-blue-500 text-white rounded">Agregar costo</button>
-      <div id="lista-costos"></div>
-      <p>Total costos: <span id="total-costos">0</span></p>
-    </div>
+    <div class="card"><!-- 🔸 CAMBIO: envolvemos todo en una card -->
+      <h2 class="text-2xl mb-4">Calculadora Precio de Venta</h2>
 
-    <div>
-      <label>
-        <input type="radio" name="margenMarkup" value="margen" checked /> Margen de ganancia %
-      </label>
-      <label>
-        <input type="radio" name="margenMarkup" value="markup" /> Markup %
-      </label>
-      <input id="porcentajeGanancia" type="number" min="0" max="100" value="0" class="border p-1 w-20 ml-2" />
-    </div>
+      <div id="costos-container" class="mb-4"><!-- 🔸 CAMBIO: espacio inferior -->
+        <h3 class="mb-2 text-lg font-semibold">Costos</h3> <!-- 🔸 CAMBIO: más visual -->
+        <button id="agregarCostoBtn" class="primary mb-2">Agregar costo</button> <!-- 🔸 CAMBIO: clase 'primary' -->
+        <div id="lista-costos" class="flex-col-md"></div> <!-- 🔸 CAMBIO: estilo responsivo -->
+        <p class="mt-2">Total costos: <span id="total-costos">0</span></p>
+      </div>
 
-    <p id="precioVentaResult" class="mt-2 font-semibold"></p>
+      <div class="mb-4"> <!-- 🔸 CAMBIO: agrupación con margen inferior -->
+        <label class="block mb-1">
+          <input type="radio" name="margenMarkup" value="margen" checked /> Margen de ganancia %
+        </label>
+        <label class="block mb-2">
+          <input type="radio" name="margenMarkup" value="markup" /> Markup %
+        </label>
+        <input id="porcentajeGanancia" type="number" min="0" max="100" value="0" class="border p-2 rounded w-28" /> <!-- 🔸 CAMBIO: input más cómodo -->
+      </div>
 
-    <div class="mt-4">
-      <label>IVA %: <input id="ivaInput" type="number" min="0" max="100" value="0" class="border p-1 w-20" /></label>
-      <p id="precioConIvaResult" class="mt-2 font-semibold"></p>
+      <p id="precioVentaResult" class="mt-2 font-semibold text-orange-700"></p> <!-- 🔸 CAMBIO: color destacado -->
+
+      <div class="mt-4">
+        <label class="block mb-1">IVA %:</label>
+        <input id="ivaInput" type="number" min="0" max="100" value="0" class="border p-2 rounded w-28" />
+        <p id="precioConIvaResult" class="mt-2 font-semibold text-orange-700"></p>
+      </div>
     </div>
   `;
 
@@ -73,13 +77,13 @@ export function renderCalculadoraPrecioVenta(container) {
 
   function agregarCosto() {
     const div = document.createElement('div');
-    div.className = 'mb-2';
+    div.className = 'input-group'; // 🔸 CAMBIO: para aplicar espacio vertical entre inputs
 
     const input = document.createElement('input');
     input.type = 'number';
     input.min = '0';
     input.step = '0.01';
-    input.className = 'costo-input border p-1 w-32';
+    input.className = 'costo-input border p-2 rounded w-full';
     input.placeholder = 'Costo';
 
     input.addEventListener('input', actualizarCalculos);
