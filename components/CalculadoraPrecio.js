@@ -4,7 +4,7 @@ export function renderCalculadoraPrecioVenta(container) {
       <h2 class="text-2xl mb-4">Calculadora Precio de Venta</h2>
 
       <div id="costos-container" class="mb-4"><!-- 🔸 CAMBIO: espacio inferior -->
-        <h3 class="mb-2 text-lg font-semibold">Costos</h3> <!-- 🔸 CAMBIO: más visual -->
+        <h3 class="mb-2 text-lg font-semibold">Ingresá tus Costos:</h3> <!-- 🔸 CAMBIO: más visual -->
         <button id="agregarCostoBtn" class="primary mb-2">Agregar costo</button> <!-- 🔸 CAMBIO: clase 'primary' -->
         <div id="lista-costos" class="flex-col-md"></div> <!-- 🔸 CAMBIO: estilo responsivo -->
         <p class="mt-2">Total costos: <span id="total-costos">0</span></p>
