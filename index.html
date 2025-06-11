@@ -9,6 +9,12 @@
     .sidebar h2 {
       color: white;
     }
+    .dashboard-cards {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body style="display: flex; margin: 0; height: 100vh;">
@@ -53,8 +59,9 @@
     </div>
   </main>
 
-  <!-- NUEVO: Sección de dashboard oculta al inicio -->
+  <!-- Sección de dashboard -->
   <section id="dashboard" style="display: none; padding: 1rem; flex: 1;">
+    <h2 class="section-title">Dashboard</h2>
     <section class="dashboard-cards">
       <div class="card-box bg-blue">
         <h3 id="ventasPromedio">--</h3>
