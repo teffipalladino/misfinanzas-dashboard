@@ -21,6 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(mod => mod.PuntoEquilibrio(mainContainer));
   });
 
+  document.getElementById('contadoCuotasBtn').addEventListener('click', () => {
+    limpiarMain();
+    import('./components/CalculadoraContadoCuotas.js')
+      .then(mod => mod.renderContadoCuotas(mainContainer));
+  });
+
   // Carga inicial: Precio de venta
   limpiarMain();
   import('./components/CalculadoraPrecio.js')
